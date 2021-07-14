@@ -1,0 +1,18 @@
+.profile-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  .profile-photo {
+    border-radius: 50%;
+    height: 32px;
+    background: #835afd;
+    background-image: attr("photo");
+  }
+
+  span {
+    margin-left: 8px;
+    font-weight: 500;
+    font-size: 1.4rem;
+  }
+}

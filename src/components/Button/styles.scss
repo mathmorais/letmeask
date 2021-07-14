@@ -1,0 +1,33 @@
+.transparent {
+  background: none;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 50px;
+  color: #f8f8f8;
+  background: #835afd;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.6rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: filter 0.3s;
+
+  &:not(:disabled):hover {
+    filter: brightness(0.85);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  img {
+    margin: 0 8px;
+  }
+}

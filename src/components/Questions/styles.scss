@@ -1,0 +1,28 @@
+#questions-container {
+  padding-bottom: 32px;
+}
+
+.questions-fallback {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 65px;
+
+  img {
+    margin-bottom: 16px;
+  }
+
+  h4 {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 1.8rem;
+  }
+
+  p {
+    font-family: Roboto;
+    font-size: 1.4rem;
+    color: #737380;
+  }
+}

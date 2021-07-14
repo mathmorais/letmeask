@@ -1,0 +1,57 @@
+header {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #e2e2e2;
+  padding: 20px 0;
+  margin-bottom: 64px;
+}
+
+#header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+}
+
+.right-side {
+  max-width: 100%;
+  display: flex;
+
+  .copy-room {
+    width: 55%;
+    margin-right: 8px;
+  }
+
+  > button {
+    width: 45%;
+  }
+}
+
+.copy-room {
+  width: 100%;
+  overflow: hidden;
+
+  display: flex;
+  border-radius: 8px;
+
+  border: 1px solid #835afd;
+
+  button {
+    width: 80px;
+    border: inherit;
+    min-height: 0;
+    border-radius: 0;
+  }
+
+  div {
+    display: flex;
+    padding: 11px 17px;
+    align-items: center;
+
+    span {
+      width: max-content;
+      font-weight: 500;
+      font-size: clamp(1.4rem, 2.2vw, 1.7rem);
+    }
+  }
+}
