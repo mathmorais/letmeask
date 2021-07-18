@@ -35,7 +35,9 @@ export const Header: React.FC<{ roomId: number; admin?: boolean }> = ({
               <span>Sala {roomId}</span>
             </div>
           </div>
-          {admin && <Button onClick={() => {}}>Encerrar sala</Button>}
+          {admin && (
+            <Button onClick={() => handleCloseRoom()}>Encerrar sala</Button>
+          )}
         </div>
       </div>
     </header>

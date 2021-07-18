@@ -2,13 +2,12 @@ import { useState } from "react";
 import { Button } from "../Button";
 
 type QuestionActionProps = {
-  icon: React.FunctionComponent;
   onClick: () => void;
 };
 
 export const QuestionAction: React.FC<QuestionActionProps> = ({
-  icon,
   onClick,
+  children,
 }) => {
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
@@ -21,7 +20,7 @@ export const QuestionAction: React.FC<QuestionActionProps> = ({
         onClick();
       }}
     >
-      {icon}
+      {children}
     </Button>
   );
 };

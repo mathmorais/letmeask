@@ -32,7 +32,7 @@ export function Home() {
 
   const handleCheckRoomExists = (room: firebase.database.DataSnapshot) => {
     if (!room.exists()) {
-      throw new Error("Essa sala não existe...");
+      throw new Error("Essa sala não existe ou foi encerrada.");
     }
     return room;
   };
@@ -93,7 +93,7 @@ export function Home() {
               type="number"
               ref={roomCodeField}
               placeholder="Digite o código da sala"
-              hintText={error || "Limite de 6 digitos por codigo"}
+              hintText={error}
             />
 
             <Button type="submit">Entrar na sala</Button>

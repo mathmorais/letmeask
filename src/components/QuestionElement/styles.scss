@@ -1,3 +1,9 @@
+.highlighted {
+}
+
+.hidden {
+}
+
 .question {
   padding: 24px;
   display: flex;
@@ -31,12 +37,8 @@
     display: flex;
 
     button {
-      &#active > svg path {
+      &:is(#active) > svg * {
         stroke: #835afd;
-      }
-
-      &:hover > svg {
-        filter: opacity(0.8);
       }
 
       min-height: 100%;

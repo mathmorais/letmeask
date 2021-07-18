@@ -13,7 +13,13 @@ export const QuestionForm: React.FC<{ roomId: number }> = ({ roomId }) => {
   const questionField = createRef<HTMLTextAreaElement>();
 
   const handleAddNewQuestion = async (question: Question) => {
-    await database.ref(`/rooms/${roomId}`).child("questions").push(question);
+    const reference = database.ref(`/rooms/${roomId}`).child("questions");
+    const key = reference.push().key;
+
+    if (key) {
+      question.uid = key;
+      reference.child(key).set(question);
+    }
   };
 
   const handleGetQuestionInput = () => {
