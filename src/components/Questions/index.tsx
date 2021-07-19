@@ -5,70 +5,53 @@ import { ReactComponent as EmptyQuestion } from "../../assets/images/empty-quest
 import { QuestionElement } from "../QuestionElement";
 import "./styles.scss";
 
-import { ReactComponent as Check } from "../../assets/images/check.svg";
-import { ReactComponent as Answer } from "../../assets/images/answer.svg";
-import { ReactComponent as Delete } from "../../assets/images/delete.svg";
-import { ReactComponent as Like } from "../../assets/images/like.svg";
-
 import { QuestionAction } from "../QuestionAction";
-import { useQuestionActions } from "../../hooks/useQuestionActions";
+import { Action, ActionBuilder } from "../../entities/Action";
 
-export const Questions = memo(
-  ({ questions }: { questions: Question[]; roomId: number }) => {
-    const { handleQuestionAction } = useQuestionActions();
+interface IQuestionProps {
+  questions: Question[];
+  actions: Action[];
+}
 
-    const handleRenderQuestions = () => {
-      return questions
-        .map((question) => {
-          if (question) {
-            const actions = [
-              //  ( refactoring of tomorrow ) on QuestionAction receive an action unless a function
-              // then... change the properties (isHidden, isHighlighted) to just hidden and hightlighted,
-              // to make more easier to access these properties by a string
-              <QuestionAction
-                onClick={() =>
-                  handleQuestionAction(
-                    question.uid!,
-                    "highlight",
-                    question.isHighlighted
-                  )
-                }
-              >
-                <Answer />
-              </QuestionAction>,
-              <QuestionAction
-                onClick={() => handleQuestionAction(question.uid!, "delete")}
-              >
-                <Delete />
-              </QuestionAction>,
-            ];
+export const Questions = memo(({ questions, actions }: IQuestionProps) => {
+  const handleRenderActions = (question: Question) => {
+    return actions.map((action, index) => (
+      <QuestionAction
+        key={index}
+        arial-label={action.label}
+        action={action}
+        questionUid={question.uid!}
+      >
+        <action.icon />
+      </QuestionAction>
+    ));
+  };
 
-            return (
-              <QuestionElement
-                actions={actions}
-                key={question.uid}
-                question={question}
-              />
-            );
-          } else {
-            return undefined;
-          }
-        })
-        .reverse();
-    };
+  const handleRenderQuestions = () => {
+    return questions
+      .map((question) => {
+        return (
+          <QuestionElement
+            actions={handleRenderActions(question)}
+            key={question.uid}
+            question={question}
+          />
+        );
+      })
+      .reverse();
+  };
 
-    if (questions.length > 0) {
-      return (
-        <section id="questions-container">{handleRenderQuestions()}</section>
-      );
-    } else {
-      return (
-        <div className="questions-fallback">
-          <EmptyQuestion />
-          <h4>Nenhuma pergunta por aqui...</h4>
-          <p>Faça o seu login e seja a primeira pessoa a fazer uma pergunta!</p>
-        </div>
-      );
-    }
+  if (questions.length > 0) {
+    return (
+      <section id="questions-container">{handleRenderQuestions()}</section>
+    );
+  } else {
+    return (
+      <div className="questions-fallback">
+        <EmptyQuestion />
+        <h4>Nenhuma pergunta por aqui...</h4>
+        <p>Faça o seu login e seja a primeira pessoa a fazer uma pergunta!</p>
+      </div>
+    );
   }
-);
+});

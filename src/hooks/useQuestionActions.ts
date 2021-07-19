@@ -2,14 +2,12 @@ import { useDatabase } from "../hooks/useDatabase";
 import firebase from "firebase/app";
 import { useGetRoomUid } from "./useGetRoomUid";
 
-type Actions = "highlight" | "hide" | "delete";
-
-export const useQuestionActions = () => {
+export const useQuestionActions = (questionUid: string) => {
   const database = useDatabase();
   const roomId = useGetRoomUid();
 
-  const handleGetQuestionRef = (uid: string) => {
-    return database.ref(`/rooms/${roomId}/questions`).child(uid);
+  const handleGetQuestionRef = () => {
+    return database.ref(`/rooms/${roomId}/questions`).child(questionUid);
   };
 
   const handleHighlightQuestion = (
@@ -30,14 +28,19 @@ export const useQuestionActions = () => {
     highlight: handleHighlightQuestion,
     hide: handleHideQuestion,
     delete: handleDeleteQuestion,
-  };
+  } as { [actionName: string]: Function };
 
-  const handleQuestionAction = async (
-    uid: string,
-    action: Actions,
-    currentValue?: boolean
-  ) => {
-    return await actions[action](handleGetQuestionRef(uid), currentValue);
+  // const handleResetActions = async (
+  //   questionRef: firebase.database.Reference
+  // ) => {
+  //   await questionRef.child("isHighlighted").set(false);
+  //   await questionRef.child("isHidden").set(false);
+  // };
+
+  const handleQuestionAction = async (action: string, prevValue?: boolean) => {
+    const ref = handleGetQuestionRef();
+
+    return actions[action](ref, prevValue);
   };
 
   return { handleQuestionAction };

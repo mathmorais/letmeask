@@ -1,26 +1,27 @@
 import { useState } from "react";
+import { Action } from "../../entities/Action";
+import { useQuestionActions } from "../../hooks/useQuestionActions";
 import { Button } from "../Button";
 
-type QuestionActionProps = {
-  onClick: () => void;
+export type QuestionActionProps = {
+  action: Action;
+  questionUid: string;
 };
 
-export const QuestionAction: React.FC<QuestionActionProps> = ({
-  onClick,
-  children,
-}) => {
-  const [isClicked, setIsClicked] = useState<boolean>(false);
+export const QuestionAction: React.FC<QuestionActionProps> = (props) => {
+  const { handleQuestionAction } = useQuestionActions(props.questionUid);
+
+  const handleActionClick = () => {
+    handleQuestionAction(props.action.name, props.action.prevValue);
+  };
 
   return (
     <Button
-      id={isClicked ? "active" : ""}
+      id={props.action.prevValue ? "active" : ""}
       variation={"transparent"}
-      onClick={() => {
-        setIsClicked(!isClicked);
-        onClick();
-      }}
+      onClick={handleActionClick}
     >
-      {children}
+      {props.children}
     </Button>
   );
 };

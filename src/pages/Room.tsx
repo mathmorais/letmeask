@@ -8,11 +8,36 @@ import { useRoom } from "../hooks/useRoom";
 import { Questions } from "../components/Questions";
 import "../styles/Room.scss";
 
+import { ReactComponent as Check } from "../../assets/images/check.svg";
+import { ReactComponent as Answer } from "../../assets/images/answer.svg";
+import { ReactComponent as Delete } from "../../assets/images/delete.svg";
+
+import { ActionBuilder, Action } from "../entities/Action";
+
 export const Room = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const actionBuilder = new ActionBuilder();
   const { room, questions } = useRoom({
     roomId: useGetRoomUid(),
   });
+
+  const actions: Action[] = [
+    actionBuilder
+      .setName("hide")
+      .setIcon(Check)
+      .setLabel("Esconder questão")
+      .getAction(),
+    actionBuilder
+      .setName("highlight")
+      .setIcon(Answer)
+      .setLabel("Destacar questão")
+      .getAction(),
+    actionBuilder
+      .setName("delete")
+      .setIcon(Delete)
+      .setLabel("Deletar questão")
+      .getAction(),
+  ];
 
   useEffect(() => {
     if (room && questions) {
@@ -32,7 +57,7 @@ export const Room = () => {
               {questions.length > 0 && <h3>{questions.length} pergunta(s)</h3>}
             </div>
             <QuestionForm roomId={room.uid} />
-            <Questions roomId={room.uid} questions={questions} />
+            <Questions actions={actions} questions={questions} />
           </main>
         </div>
       )}
