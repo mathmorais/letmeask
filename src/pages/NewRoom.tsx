@@ -9,56 +9,46 @@ import { Room } from "../entities/Room";
 import firebase from "firebase/app";
 import { Input } from "../components/Input";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useDatabase } from "../hooks/useDatabase";
 
 export function NewRoom() {
   const { user } = useAuthContext();
+  const database = useDatabase();
   const history = useHistory();
 
-  const roomName = createRef<HTMLInputElement>();
+  const roomNameField = createRef<HTMLInputElement>();
 
   const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    if (!firebaseConnection.isInitialized) return;
-
-    if (roomName.current) {
-      try {
-        const reference = handleGetDatabaseReference();
-        handleSaveOnDatabase(reference, handleNewRoom(roomName.current.value));
-      } catch (err) {
-        console.log(err);
-      }
+    if (roomNameField.current?.value) {
+      handleSaveOnDatabase(
+        database.ref("rooms"),
+        handleNewRoom(roomNameField.current.value)
+      );
     }
-  };
-
-  const handleRedirect = (roomKey: string) => {
-    return history.push(`/rooms/${roomKey}`);
   };
 
   const handleSaveOnDatabase = async (
     databaseReference: firebase.database.Reference,
     room: Room
   ) => {
-    const roomReference = databaseReference.child(room.uid.toString());
+    const roomReference = databaseReference.child(String(room.uid));
     await roomReference.set(room);
+
     if (roomReference.key) {
-      handleRedirect(roomReference.key);
+      history.push(`/rooms/${roomReference.key}`);
     } else {
-      throw new Error("A key don't exist in the room created");
+      throw new Error("Um erro ocorreu ao criar a sala");
     }
   };
 
-  const handleGetDatabaseReference = () => {
-    const reference = firebaseConnection.services.database!.ref("rooms");
-    return reference;
-  };
-
-  const handleNewRoom = (roomName: string) => {
-    const hasARoomName: boolean = roomName.trim() !== "";
-    if (hasARoomName && user) {
-      return new Room(roomName, user);
+  const handleNewRoom = (roomNameField: string) => {
+    const hasRoomName = roomNameField.trim() !== "";
+    if (hasRoomName && user) {
+      return new Room(roomNameField, user);
     } else {
-      throw new Error("Missing room name");
+      throw new Error("Faltando nome da sala");
     }
   };
 
@@ -80,14 +70,12 @@ export function NewRoom() {
           <img draggable={false} alt="Letmeask logo" src={logoImg} />
           <h2>Crie uma nova sala</h2>
           <form onSubmit={handleFormSubmit}>
-            <Input ref={roomName} placeholder="Nome da sala" />
+            <Input ref={roomNameField} placeholder="Nome da sala" />
             <Button type="submit">Criar sala</Button>
           </form>
           <span className="return-page">
             Quer entrar em uma sala já existente?{" "}
-            <Link to="/" aria-label="Voltar para a pagina de conectar em salas">
-              Clique aqui
-            </Link>
+            <Link to="/">Clique aqui</Link>
           </span>
         </div>
       </main>
