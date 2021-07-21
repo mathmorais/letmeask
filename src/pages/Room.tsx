@@ -7,37 +7,15 @@ import { useGetRoomUid } from "../hooks/useGetRoomUid";
 import { useRoom } from "../hooks/useRoom";
 import { Questions } from "../components/Questions";
 import "../styles/Room.scss";
+import { Modal } from "../components/Modal";
 
-import { ReactComponent as Check } from "../../assets/images/check.svg";
-import { ReactComponent as Answer } from "../../assets/images/answer.svg";
-import { ReactComponent as Delete } from "../../assets/images/delete.svg";
-
-import { ActionBuilder, Action } from "../entities/Action";
+import { ReactComponent as DeleteIcon } from "../assets/images/delete.svg";
 
 export const Room = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const actionBuilder = new ActionBuilder();
   const { room, questions } = useRoom({
     roomId: useGetRoomUid(),
   });
-
-  const actions: Action[] = [
-    actionBuilder
-      .setName("hide")
-      .setIcon(Check)
-      .setLabel("Esconder questão")
-      .getAction(),
-    actionBuilder
-      .setName("highlight")
-      .setIcon(Answer)
-      .setLabel("Destacar questão")
-      .getAction(),
-    actionBuilder
-      .setName("delete")
-      .setIcon(Delete)
-      .setLabel("Deletar questão")
-      .getAction(),
-  ];
 
   useEffect(() => {
     if (room && questions) {
@@ -51,13 +29,20 @@ export const Room = () => {
       {room && questions && (
         <div id="room-container">
           <Header roomId={room.uid} />
+
           <main>
+            <Modal
+              icon={DeleteIcon}
+              title="Excluir pergunta"
+              description="Tem certeza que você deseja excluir esta pergunta?"
+              onAccept={() => console.log("Accept")}
+            />
             <div className="title-container">
               <h1>{room.title}</h1>
               {questions.length > 0 && <h3>{questions.length} pergunta(s)</h3>}
             </div>
             <QuestionForm roomId={room.uid} />
-            <Questions actions={actions} questions={questions} />
+            <Questions questions={questions} />
           </main>
         </div>
       )}

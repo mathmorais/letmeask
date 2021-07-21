@@ -1,15 +1,14 @@
 import illustrationImg from "../assets/images/illustration.svg";
 import logoImg from "../assets/images/logo.svg";
 import { Button } from "../components/Button";
-import "../shared/initials.scss";
 import { Link, useHistory } from "react-router-dom";
 import { createRef, FormEvent } from "react";
-import { firebaseConnection } from "../services/firebase/connection";
 import { Room } from "../entities/Room";
 import firebase from "firebase/app";
 import { Input } from "../components/Input";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useDatabase } from "../hooks/useDatabase";
+import "../shared/initials.scss";
 
 export function NewRoom() {
   const { user } = useAuthContext();
@@ -22,18 +21,12 @@ export function NewRoom() {
     event.preventDefault();
 
     if (roomNameField.current?.value) {
-      handleSaveOnDatabase(
-        database.ref("rooms"),
-        handleNewRoom(roomNameField.current.value)
-      );
+      handleSaveOnDatabase(handleNewRoom(roomNameField.current.value));
     }
   };
 
-  const handleSaveOnDatabase = async (
-    databaseReference: firebase.database.Reference,
-    room: Room
-  ) => {
-    const roomReference = databaseReference.child(String(room.uid));
+  const handleSaveOnDatabase = async (room: Room) => {
+    const roomReference = database.ref("rooms").child(String(room.uid));
     await roomReference.set(room);
 
     if (roomReference.key) {

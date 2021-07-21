@@ -2,42 +2,39 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Header } from "../components/Header";
 import { QuestionForm } from "../components/QuestionForm";
-import { Questions } from "../components/Questions";
 import { RoomLoading } from "../components/RoomLoading";
 import { useGetRoomUid } from "../hooks/useGetRoomUid";
 import { useRoom } from "../hooks/useRoom";
+import { Questions } from "../components/Questions";
 import "../styles/Room.scss";
 
 export const RoomAdmin = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { room } = useRoom({
+  const { room, questions } = useRoom({
     roomId: useGetRoomUid(),
   });
 
   useEffect(() => {
-    if (room) {
+    if (room && questions) {
       setIsLoading(false);
     }
-  }, [room]);
+  }, [room, questions]);
 
   return (
     <>
-      {/* <RoomLoading isLoading={isLoading} />
-      {room && (
+      <RoomLoading isLoading={isLoading} />
+      {room && questions && (
         <div id="room-container">
-          <Header roomId={room.uid} />
+          <Header admin roomId={room.uid} />
           <main>
             <div className="title-container">
               <h1>{room.title}</h1>
-              {Object.keys(room.questions!).length > 0 && (
-                <h3>{Object.keys(room.questions!).length} pergunta(s)</h3>
-              )}
+              {questions.length > 0 && <h3>{questions.length} pergunta(s)</h3>}
             </div>
-            <QuestionForm roomId={room.uid} />
-            <Questions />
+            <Questions admin questions={questions} />
           </main>
         </div>
-      )} */}
+      )}
     </>
   );
 };
