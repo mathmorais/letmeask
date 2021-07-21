@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes } from "react";
 import "./styles.scss";
 
-type Variations = "transparent" | "outlined";
+type Variations = "danger" | "cancel" | "transparent" | "outline";
 
 interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   variation?: Variations;
