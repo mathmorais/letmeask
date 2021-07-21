@@ -18,8 +18,10 @@ export const useRoom = ({ roomId }: { roomId: number }) => {
           return questions[key];
         });
 
-        setQuestions(newQuestions);
+        return setQuestions(newQuestions);
       }
+
+      setQuestions([]);
     });
   }, []);
 
