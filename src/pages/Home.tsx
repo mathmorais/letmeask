@@ -3,17 +3,18 @@ import logoImg from "../assets/images/logo.svg";
 import googleIconImg from "../assets/images/google-icon.svg";
 import { Button } from "../components/Button";
 import { useHistory } from "react-router-dom";
-import "../shared/initials.scss";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useUser } from "../hooks/useUser";
 import { firebaseConnection } from "../services/firebase/connection";
 import { createRef, FormEvent } from "react";
 import firebase from "firebase/app";
 import { useState } from "react";
 import { Input } from "../components/Input";
 
+import "../shared/initials.scss";
+
 export function Home() {
   const history = useHistory();
-  const { user, handleAuthSignIn } = useAuthContext();
+  const { user, handleAuthSignIn } = useUser();
   const roomCodeField = createRef<HTMLInputElement>();
   const [error, setError] = useState<string>();
 

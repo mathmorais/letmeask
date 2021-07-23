@@ -4,12 +4,18 @@ import { Button } from "../Button";
 import "./styles.scss";
 import { useDatabase } from "../../hooks/useDatabase";
 import { useHistory } from "react-router-dom";
+import { useContext } from "react";
+import { ModalContext } from "../../contexts/ModalContext";
+import { Modal } from "../../entities/Modal";
+
+import { ReactComponent as DeleteIcon } from "../../assets/images/delete.svg";
 
 export const Header: React.FC<{ roomId: number; admin?: boolean }> = ({
   roomId,
   admin = false,
 }) => {
   const history = useHistory();
+  const { setModal } = useContext(ModalContext);
   const database = useDatabase();
 
   const handleCopyRoom = () => {
@@ -17,9 +23,19 @@ export const Header: React.FC<{ roomId: number; admin?: boolean }> = ({
   };
 
   const handleCloseRoom = () => {
-    database.ref(`/rooms/${roomId}`).remove(() => {
-      history.replace("/");
+    const modal = new Modal({
+      icon: DeleteIcon,
+      title: "Encerrar sala",
+      description: "Tem certeza que você deseja encerrar esta sala?",
+      onAccept: () => {
+        database.ref(`/rooms/${roomId}`).remove(() => {
+          setModal(undefined);
+          history.replace("/");
+        });
+      },
     });
+
+    setModal(modal);
   };
 
   return (

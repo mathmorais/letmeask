@@ -4,14 +4,13 @@ import { Button } from "../components/Button";
 import { Link, useHistory } from "react-router-dom";
 import { createRef, FormEvent } from "react";
 import { Room } from "../entities/Room";
-import firebase from "firebase/app";
 import { Input } from "../components/Input";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useUser } from "../hooks/useUser";
 import { useDatabase } from "../hooks/useDatabase";
 import "../shared/initials.scss";
 
 export function NewRoom() {
-  const { user } = useAuthContext();
+  const { user } = useUser();
   const database = useDatabase();
   const history = useHistory();
 

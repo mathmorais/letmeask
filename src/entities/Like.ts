@@ -1,7 +1,8 @@
 export class Like {
-  authorId: string;
+  timestamp: number;
 
-  constructor(authorId: string) {
-    this.authorId = authorId;
+  constructor() {
+    const time = new Date().getTime();
+    this.timestamp = time;
   }
 }

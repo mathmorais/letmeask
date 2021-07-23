@@ -6,8 +6,8 @@ export class Question {
   content: string;
   user: User;
   likes: { [key: string]: Like } = {};
-  isHighlighted: boolean = false;
-  isHidden: boolean = false;
+  highlighted: boolean = false;
+  hidden: boolean = false;
 
   constructor(content: string, user: User, uid?: string) {
     this.uid = uid;

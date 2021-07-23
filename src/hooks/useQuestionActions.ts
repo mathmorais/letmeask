@@ -2,12 +2,21 @@ import { useDatabase } from "../hooks/useDatabase";
 import firebase from "firebase/app";
 import { useGetRoomUid } from "./useGetRoomUid";
 import { Like } from "../entities/Like";
-import { useAuthContext } from "./useAuthContext";
+import { useUser } from "./useUser";
+import { Modal } from "../entities/Modal";
+import { useContext } from "react";
+import { ModalContext } from "../contexts/ModalContext";
+import Cookies from "js-cookie";
+
+import { ReactComponent as DeleteIcon } from "../assets/images/delete.svg";
+import { useLikedCookies } from "./useLikedCookies";
 
 export const useQuestionActions = (questionUid: string) => {
   const database = useDatabase();
   const roomId = useGetRoomUid();
-  const { user } = useAuthContext();
+  const { user } = useUser();
+  const { setModal } = useContext(ModalContext);
+  const { likedItems, handleFindLikedQuestion } = useLikedCookies();
 
   const handleGetQuestionRef = () => {
     return database.ref(`/rooms/${roomId}/questions`).child(questionUid);
@@ -29,11 +38,37 @@ export const useQuestionActions = (questionUid: string) => {
     questionRef.child("hidden").set(!prevValue);
   };
 
-  const handleDeleteQuestion = (questionRef: firebase.database.Reference) =>
-    questionRef.remove();
+  const handleDeleteQuestion = (questionRef: firebase.database.Reference) => {
+    const modal = new Modal({
+      icon: DeleteIcon,
+      title: "Excluir pergunta",
+      description: "Tem certeza que você deseja excluir esta pergunta?",
+      onAccept: () => {
+        setModal(undefined);
+        questionRef.remove();
+      },
+    });
+
+    setModal(modal);
+  };
+
+  const handleUnLikeQuestion = (questionRef: firebase.database.Reference) => {
+    if (user) {
+      questionRef.child(`likes/${user.uid}`).remove();
+      Cookies.set(
+        "liked",
+        likedItems.filter((item) => item !== questionRef.key)
+      );
+    }
+  };
 
   const handleLikeQuestion = (questionRef: firebase.database.Reference) => {
+    if (handleFindLikedQuestion(questionRef.key!)) {
+      return handleUnLikeQuestion(questionRef);
+    }
+
     if (user) {
+      Cookies.set("liked", [...likedItems, questionRef.key!]);
       questionRef.child(`likes/${user.uid}`).set(new Like());
     } else {
       alert("Usuário precisa estar logado");

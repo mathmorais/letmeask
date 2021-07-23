@@ -1,13 +1,13 @@
 import { FormEvent } from "react";
 import { createRef } from "react";
 import { Question } from "../../entities/Question";
-import { useAuthContext } from "../../hooks/useAuthContext";
+import { useUser } from "../../hooks/useUser";
 import { useDatabase } from "../../hooks/useDatabase";
 import { Button } from "../Button";
 import { Profile } from "../Profile";
 
 export const QuestionForm: React.FC<{ roomId: number }> = ({ roomId }) => {
-  const { user, handleAuthSignIn } = useAuthContext();
+  const { user, handleAuthSignIn } = useUser();
   const database = useDatabase();
 
   const questionField = createRef<HTMLTextAreaElement>();

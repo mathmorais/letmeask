@@ -15,7 +15,7 @@ export const RoomLoading: React.FC<{ isLoading: boolean }> = ({
       >
         <main>
           <div className="loading">
-            <div className="loading-square"></div>
+            <div className="loading-square" />
           </div>
         </main>
       </div>

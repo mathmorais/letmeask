@@ -9,9 +9,9 @@ type ContextType = {
   handleAuthSignIn: () => Promise<void>;
 };
 
-export const AuthContext = createContext({} as ContextType);
+export const UserContext = createContext({} as ContextType);
 
-export const AuthContextProvider: React.FC = ({ children }) => {
+export const UserContextProvider: React.FC = ({ children }) => {
   let [userState, setUserState] = useState<User>();
 
   useEffect(() => {
@@ -52,10 +52,10 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
+    <UserContext.Provider
       value={{ handleAuthSignIn: handleAuthSignIn, user: userState }}
     >
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 };

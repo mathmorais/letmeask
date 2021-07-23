@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Action } from "../../entities/Action";
 import { useQuestionActions } from "../../hooks/useQuestionActions";
 import { Button } from "../Button";
