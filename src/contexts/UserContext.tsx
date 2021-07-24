@@ -7,18 +7,19 @@ import firebase from "firebase/app";
 type ContextType = {
   user?: User;
   handleAuthSignIn: () => Promise<void>;
+  handleAuthSignOut: () => Promise<void>;
 };
 
 export const UserContext = createContext({} as ContextType);
 
 export const UserContextProvider: React.FC = ({ children }) => {
-  let [userState, setUserState] = useState<User>();
+  let [user, setUser] = useState<User>();
 
   useEffect(() => {
     if (firebaseConnection.isInitialized) {
       const unsubscribe = firebaseConnection.services.auth!.onAuthStateChanged(
         (user) => {
-          if (user) return setUserState(handleUserInformations(user));
+          if (user) return setUser(handleUserInformations(user));
         }
       );
 
@@ -36,8 +37,15 @@ export const UserContextProvider: React.FC = ({ children }) => {
       );
 
       if (user) {
-        setUserState(handleUserInformations(user));
+        setUser(handleUserInformations(user));
       }
+    }
+  };
+
+  const handleAuthSignOut = async () => {
+    if (firebaseConnection.isInitialized) {
+      await firebaseConnection.services.auth!.signOut();
+      setUser(undefined);
     }
   };
 
@@ -52,9 +60,7 @@ export const UserContextProvider: React.FC = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider
-      value={{ handleAuthSignIn: handleAuthSignIn, user: userState }}
-    >
+    <UserContext.Provider value={{ user, handleAuthSignIn, handleAuthSignOut }}>
       {children}
     </UserContext.Provider>
   );

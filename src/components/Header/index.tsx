@@ -9,6 +9,8 @@ import { ModalContext } from "../../contexts/ModalContext";
 import { Modal } from "../../entities/Modal";
 
 import { ReactComponent as DeleteIcon } from "../../assets/images/delete.svg";
+import { firebaseConnection } from "../../services/firebase/connection";
+import { useUser } from "../../hooks/useUser";
 
 export const Header: React.FC<{ roomId: number; admin?: boolean }> = ({
   roomId,
@@ -17,6 +19,7 @@ export const Header: React.FC<{ roomId: number; admin?: boolean }> = ({
   const history = useHistory();
   const { setModal } = useContext(ModalContext);
   const database = useDatabase();
+  const { handleAuthSignOut } = useUser();
 
   const handleCopyRoom = () => {
     navigator.clipboard.writeText(roomId.toString());
@@ -38,6 +41,11 @@ export const Header: React.FC<{ roomId: number; admin?: boolean }> = ({
     setModal(modal);
   };
 
+  const handleUserLogout = async () => {
+    await handleAuthSignOut();
+    history.push("/");
+  };
+
   return (
     <header>
       <div id="header-content">
@@ -51,8 +59,12 @@ export const Header: React.FC<{ roomId: number; admin?: boolean }> = ({
               <span>Sala {roomId}</span>
             </div>
           </div>
-          {admin && (
+          {admin ? (
             <Button onClick={() => handleCloseRoom()}>Encerrar sala</Button>
+          ) : (
+            <Button variation="outlined" onClick={() => handleUserLogout()}>
+              Logout
+            </Button>
           )}
         </div>
       </div>
