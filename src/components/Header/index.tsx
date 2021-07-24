@@ -9,7 +9,6 @@ import { ModalContext } from "../../contexts/ModalContext";
 import { Modal } from "../../entities/Modal";
 
 import { ReactComponent as DeleteIcon } from "../../assets/images/delete.svg";
-import { firebaseConnection } from "../../services/firebase/connection";
 import { useUser } from "../../hooks/useUser";
 
 export const Header: React.FC<{ roomId: number; admin?: boolean }> = ({

@@ -13,8 +13,6 @@ import { ReactComponent as LikeIcon } from "../../assets/images/like.svg";
 import { QuestionAction } from "../QuestionAction";
 import { ActionBuilder } from "../../entities/Action";
 import { useLikedCookies } from "../../hooks/useLikedCookies";
-import { useEffect } from "react";
-import { useRef } from "react";
 
 interface IQuestionProps {
   questions: Question[];
