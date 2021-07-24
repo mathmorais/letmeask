@@ -13,6 +13,8 @@ import { ReactComponent as LikeIcon } from "../../assets/images/like.svg";
 import { QuestionAction } from "../QuestionAction";
 import { ActionBuilder } from "../../entities/Action";
 import { useLikedCookies } from "../../hooks/useLikedCookies";
+import { useEffect } from "react";
+import { useRef } from "react";
 
 interface IQuestionProps {
   questions: Question[];
@@ -56,6 +58,8 @@ export const Questions = memo(
       };
 
       return actions[admin ? "admin" : "user"].map((action, index) => {
+        if (question.hidden && action.name === "like") return undefined;
+
         return (
           <QuestionAction
             key={index}
@@ -72,36 +76,21 @@ export const Questions = memo(
       });
     };
 
-    // (do tommorrow) create an simple algorithm to get the most liked question in the page.
+    const handleSortQuestionPerLikes = (questions: Question[]) => {
+      return questions.sort(
+        (question, nextQuestion) =>
+          Object.keys(question.likes ?? {}).length -
+          Object.keys(nextQuestion.likes ?? {}).length
+      );
+    };
 
-    // const handleGetMostLiked = () => {
-    //   let mostLiked = 0;
-
-    //   for (let index = 0; index < questions.length; index++) {
-    //     if (index + 1 <= questions.length - 1) {
-    //       const question = Object.keys(questions[index].likes ?? {}).length;
-    //       const nextQuestion = Object.keys(
-    //         questions[index + 1].likes ?? {}
-    //       ).length;
-
-    //       if (question > nextQuestion) {
-    //         mostLiked = Object.keys(question).length;
-    //       } else {
-    //         mostLiked = Object.keys(nextQuestion).length;
-    //       }
-    //     }
-    //   }
-
-    //   console.log(mostLiked);
-    // };
-
-    const handleRenderQuestions = () => {
+    const handleRenderQuestions = (questions: Question[]) => {
       let elements: JSX.Element[] = [];
-      let lastElements = [];
+      let lastElements: JSX.Element[] = [];
 
       for (let index = questions.length - 1; index > 0; index--) {
-        const question = questions[index];
-        console.log(question);
+        const question = handleSortQuestionPerLikes(questions)[index];
+
         const element = (
           <QuestionElement
             key={question.uid}
@@ -124,7 +113,9 @@ export const Questions = memo(
 
     if (questions.length > 0) {
       return (
-        <section id="questions-container">{handleRenderQuestions()}</section>
+        <section id="questions-container">
+          {handleRenderQuestions(questions)}
+        </section>
       );
     } else {
       return (
