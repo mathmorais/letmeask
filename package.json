@@ -1,6 +1,6 @@
 {
   "name": "letmeask",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "devDependencies": {
     "@types/jest": "^26.0.15",
