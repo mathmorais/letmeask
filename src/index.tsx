@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./shared/global.scss";
 import { App } from "./App";
 import { config } from "./services/firebase/config";
 import { firebaseConnection } from "./services/firebase/connection";

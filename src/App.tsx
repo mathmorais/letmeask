@@ -5,6 +5,7 @@ import { UserContextProvider } from "./contexts/UserContext";
 import { Room } from "./pages/Room";
 import { RoomAdmin } from "./pages/RoomAdmin";
 import { ModalContextProvider } from "./contexts/ModalContext";
+import "./styles/Global.scss";
 
 export function App() {
   return (
