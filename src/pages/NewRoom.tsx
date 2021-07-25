@@ -1,5 +1,3 @@
-import illustrationImg from "../assets/images/illustration.svg";
-import logoImg from "../assets/images/logo.svg";
 import { Button } from "../components/Button";
 import { Link, useHistory } from "react-router-dom";
 import { createRef, FormEvent } from "react";
@@ -7,7 +5,8 @@ import { Room } from "../entities/Room";
 import { Input } from "../components/Input";
 import { useUser } from "../hooks/useUser";
 import { useDatabase } from "../hooks/useDatabase";
-import "../shared/initials.scss";
+import { IllustrationSvg, LogoSvg } from "../constants/vectors";
+import "../styles/Home.scss";
 
 export function NewRoom() {
   const { user } = useUser();
@@ -29,7 +28,7 @@ export function NewRoom() {
     await roomReference.set(room);
 
     if (roomReference.key) {
-      history.push(`/rooms/${roomReference.key}`);
+      history.push(`/rooms/${roomReference.key}/admin`);
     } else {
       throw new Error("Um erro ocorreu ao criar a sala");
     }
@@ -48,18 +47,14 @@ export function NewRoom() {
     <div id="initials-container">
       <aside className="side">
         <div id="aside-content">
-          <img
-            alt="Circles illustration"
-            src={illustrationImg}
-            draggable={false}
-          />
+          <IllustrationSvg />
           <h1>Toda pergunta tem uma resposta</h1>
           <p>Aprenda e compartilhe conhecimento com outras pessoas</p>
         </div>
       </aside>
       <main className="side">
         <div id="main-content">
-          <img draggable={false} alt="Letmeask logo" src={logoImg} />
+          <LogoSvg />
           <h2>Crie uma nova sala</h2>
           <form onSubmit={handleFormSubmit}>
             <Input ref={roomNameField} placeholder="Nome da sala" />

@@ -8,9 +8,8 @@ import { Questions } from "../components/Questions";
 import { Modal } from "../components/Modal";
 import { Link } from "react-router-dom";
 
-import { ReactComponent as EmptyQuestionIcon } from "../assets/images/empty-questions.svg";
-
 import "../styles/Room.scss";
+import { EmptyQuestionSvg } from "../constants/vectors";
 
 export const RoomAdmin = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +45,7 @@ export const RoomAdmin = () => {
           </div>
         ) : (
           <div className="error-message">
-            <EmptyQuestionIcon />
+            <EmptyQuestionSvg />
             <h1>Ocorreu um erro ao carregar a sala</h1>
             <p>
               Talvez a sala não existe ou tenha sido encerrada
