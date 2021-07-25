@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Question } from "../../entities/Question";
 import { Profile } from "../Profile";
 
@@ -11,16 +11,20 @@ interface IQuestion extends Question {
 export const QuestionElement: React.FC<{
   question: IQuestion;
   actions: React.ReactNode;
-}> = ({ question, actions }) => {
-  let className = "question";
-  const variations = ["hidden", "highlighted"];
+}> = memo(({ question, actions }) => {
+  const handleGetQuestionClassName = () => {
+    let defaultClassName = "question";
+    const variations = ["hidden", "highlighted"];
 
-  variations.forEach((variation) => {
-    if (question[variation]) className += ` ${variation}`;
-  });
+    variations.forEach((variation) => {
+      if (question[variation]) defaultClassName += ` ${variation}`;
+    });
+
+    return defaultClassName;
+  };
 
   return (
-    <div className={className}>
+    <div className={handleGetQuestionClassName()}>
       <p>{question.content}</p>
       <div className="question-bottom">
         <Profile user={question.user} />
@@ -28,4 +32,4 @@ export const QuestionElement: React.FC<{
       </div>
     </div>
   );
-};
+});
