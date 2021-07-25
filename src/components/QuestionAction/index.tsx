@@ -16,6 +16,7 @@ export const QuestionAction: React.FC<QuestionActionProps> = (props) => {
 
   return (
     <Button
+      title={props.action.label}
       id={props.action.prevValue ? "active" : ""}
       variation={"transparent"}
       onClick={handleActionClick}
