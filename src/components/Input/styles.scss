@@ -1,6 +1,7 @@
 .input-container {
   display: flex;
   flex-direction: column;
+  margin-bottom: 16px;
   input {
     width: 100%;
     height: 50px;
@@ -19,10 +20,5 @@
     &::-webkit-inner-spin-button {
       display: none;
     }
-  }
-  span {
-    color: #ea4335;
-    font-size: 1.6rem;
-    margin: 10px 0;
   }
 }
