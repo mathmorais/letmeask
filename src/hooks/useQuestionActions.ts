@@ -8,8 +8,8 @@ import { useContext } from "react";
 import { ModalContext } from "../contexts/ModalContext";
 import Cookies from "js-cookie";
 
-import { ReactComponent as DeleteIcon } from "../assets/images/delete.svg";
 import { useLikedCookies } from "./useLikedCookies";
+import { DeleteSvg } from "../constants/vectors";
 
 export const useQuestionActions = (questionUid: string) => {
   const database = useDatabase();
@@ -40,7 +40,7 @@ export const useQuestionActions = (questionUid: string) => {
 
   const handleDeleteQuestion = (questionRef: firebase.database.Reference) => {
     const modal = new Modal({
-      icon: DeleteIcon,
+      icon: DeleteSvg,
       title: "Excluir pergunta",
       description: "Tem certeza que você deseja excluir esta pergunta?",
       onAccept: () => {
