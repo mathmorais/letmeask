@@ -1,14 +1,10 @@
 <div align="center">
 
-# **letmeask**
-
-</div>
-
-<div align="center">
-
 ![logo](./src/assets/vectors/logo.svg)
 
 </div>
+
+<hr/>
 
 > Letmeask é uma aplicação web com o intuito de fornecer uma maneira simples de compartilhar perguntas e receber respostas, sobre um determinado assunto.
 
